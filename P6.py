@@ -9,11 +9,12 @@ class constants:
     traveleddist = 0
 
     class carKeys:
-        namekey = 1
-        fueltypekey = 2
-        fueltankkey = 3
-        carpricekey = 4
-        traveleddist = 5
+        carnumber = 1
+        namekey = 2
+        fueltypekey = 3
+        fueltankkey = 4
+        carpricekey = 5
+        traveleddist = 6
 
 
     class engine:
@@ -61,11 +62,12 @@ class car(autopark):
         autopark.addcar(self)
         self.engine()
         autopark.carslist[autopark.carsingarage] = {}
-        autopark.carslist[autopark.carsingarage][constants.carKeys.namekey] = "Name: {}".format(self.name)
-        autopark.carslist[autopark.carsingarage][constants.carKeys.fueltypekey] = "Fuel type: {}".format(self.fueltanktype)
-        autopark.carslist[autopark.carsingarage][constants.carKeys.fueltankkey] = "Fuel tank capacity: {}".format(self.fueltank)
-        autopark.carslist[autopark.carsingarage][constants.carKeys.carpricekey] = "Car price: {}".format(constants.carprice)
-        autopark.carslist[autopark.carsingarage][constants.carKeys.traveleddist] = "Traveled distance: {}".format(constants.traveleddist)
+        autopark.carslist[autopark.carsingarage][constants.carKeys.carnumber] = autopark.carsingarage
+        autopark.carslist[autopark.carsingarage][constants.carKeys.namekey] = self.name
+        autopark.carslist[autopark.carsingarage][constants.carKeys.fueltypekey] = self.fueltanktype
+        autopark.carslist[autopark.carsingarage][constants.carKeys.fueltankkey] = self.fueltank
+        autopark.carslist[autopark.carsingarage][constants.carKeys.carpricekey] = constants.carprice
+        autopark.carslist[autopark.carsingarage][constants.carKeys.traveleddist] = constants.traveleddist
         return  "{0} number {1}, Fuel type: {2}, Fueltank {3} liters; Car price {4}; Traveled dsitace {5}.".format\
             (self.name, autopark.carsingarage, self.fueltanktype, self.fueltank, constants.carprice, constants.traveleddist)
 
@@ -84,12 +86,13 @@ class car(autopark):
             self.fueltank = constants.smallfueltank
 
 class calculator(car):
-    def __init__(self, name = 'Price'):
+    def __init__(self, carnumber, name = 'Price'):
+        self.carnumber = carnumber
         self.name = name
         self.summary()
 
     def priceSTO(self):
-        car.engine(self)
+        self.fueltanktype = autopark.carslist[self.carnumber][constants.carKeys.fueltypekey]
         if self.fueltanktype == "Gasoline":
             self.repairnumber = self.dist / constants.engine.gasoline.stodist
             self.iznos = self.dist / constants.iznosdist
@@ -102,7 +105,8 @@ class calculator(car):
         return "Travel name : {0}; Distance : {1}; Number of repairs : {2}; STO price : {3};".format(self.name, self.dist, self.repairnumber, self.repairprice)
 
     def priceFuel(self):
-        car.engine(self)
+        self.fueltanktype = autopark.carslist[self.carnumber][constants.carKeys.fueltypekey]
+        self.fueltank = autopark.carslist[self.carnumber][constants.carKeys.fueltankkey]
         if self.fueltanktype == "Gasoline":
             self.gasolineconsumption = constants.engine.gasoline.gasolineconsumption
             self.priceGasoline()
@@ -156,8 +160,8 @@ class calculator(car):
         self.priceSTO()
         self.priceFuel()
         self.carprice = constants.carprice - self.repairprice
-        autopark.carslist[autopark.carsingarage][constants.carKeys.traveleddist] = "Traveled distance: {}".format(self.dist)
-        autopark.carslist[autopark.carsingarage][constants.carKeys.carpricekey] = "Car price: {}".format(self.carprice)
+        autopark.carslist[self.carnumber][constants.carKeys.traveleddist] = "Traveled distance: {}".format(self.dist)
+        autopark.carslist[self.carnumber][constants.carKeys.carpricekey] = "Car price: {}".format(self.carprice)
         if self.fueltanktype == "Gasoline":
             return "Distance traveled {0}; Final carprice {1}; Money for fuel {2}; Number of AI92 cans spent {3}; Number of AI95 cans spent {4};" \
                    "Repair Price {5}".format(self.dist,self.carprice, self.totalfuelprice, self.AI92tanks, self.AI95tanks, self.repairprice)
@@ -167,17 +171,10 @@ class calculator(car):
 
 a = autopark()
 a1 = car('Honda')
-t1 = calculator()
 a2 = car('BMW')
-t2 = calculator()
 a3 = car('Volga')
-t3 = calculator()
-a4 = car('AlfaRomeo')
-t4 = calculator()
-a5 = car('Fiat')
-t5 = calculator()
-a6 = car('Subaru')
-t6 = calculator()
-t1 = calculator()
+a4 = car('Volga')
+t1 = calculator(3)
+t2 = calculator(2)
 for i in autopark.carslist:
     print autopark.carslist[i]
