@@ -50,6 +50,19 @@ class autopark:
     def addcar(self):
         autopark.carsingarage += 1
 
+    def UpdateTotalCarsPrice(self):
+        totalcarprice = 0
+        for i in autopark.carslist:
+            totalcarprice += autopark.carslist[i][constants.carKeys.carpricekey]
+        return "Total price of all cars in garage: {}".format(totalcarprice)
+
+    def carsinfo(self, carnumber = 1):
+        self.carnumber = carnumber
+        return "{0} car number {1}, Fuel type: {2}, Fueltank {3} liters; Car price {4}; Traveled dsitace {5}.".format \
+            (autopark.carslist[self.carnumber][constants.carKeys.namekey], autopark.carslist[self.carnumber][constants.carKeys.carnumber],
+             autopark.carslist[self.carnumber][constants.carKeys.fueltypekey], autopark.carslist[self.carnumber][constants.carKeys.fueltankkey],
+             autopark.carslist[self.carnumber][constants.carKeys.carpricekey], autopark.carslist[self.carnumber][constants.carKeys.traveleddist])
+
 class car(autopark):
 
     def __init__(self, name = 'Car'):
@@ -160,8 +173,8 @@ class calculator(car):
         self.priceSTO()
         self.priceFuel()
         self.carprice = constants.carprice - self.repairprice
-        autopark.carslist[self.carnumber][constants.carKeys.traveleddist] = "Traveled distance: {}".format(self.dist)
-        autopark.carslist[self.carnumber][constants.carKeys.carpricekey] = "Car price: {}".format(self.carprice)
+        autopark.carslist[self.carnumber][constants.carKeys.traveleddist] = self.dist
+        autopark.carslist[self.carnumber][constants.carKeys.carpricekey] = self.carprice
         if self.fueltanktype == "Gasoline":
             return "Distance traveled {0}; Final carprice {1}; Money for fuel {2}; Number of AI92 cans spent {3}; Number of AI95 cans spent {4};" \
                    "Repair Price {5}".format(self.dist,self.carprice, self.totalfuelprice, self.AI92tanks, self.AI95tanks, self.repairprice)
@@ -170,11 +183,17 @@ class calculator(car):
                     self.carprice, self.totalfuelprice, self.Diseltanks, self.repairprice)
 
 a = autopark()
+print a.UpdateTotalCarsPrice()
 a1 = car('Honda')
 a2 = car('BMW')
 a3 = car('Volga')
 a4 = car('Volga')
+a.UpdateTotalCarsPrice()
+print a.UpdateTotalCarsPrice()
 t1 = calculator(3)
 t2 = calculator(2)
+a.UpdateTotalCarsPrice()
+print a.UpdateTotalCarsPrice()
 for i in autopark.carslist:
     print autopark.carslist[i]
+print a.carsinfo(3)
