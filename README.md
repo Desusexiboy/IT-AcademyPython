@@ -16,5 +16,5 @@ Summary method use priceSto and priceFuel methods to calculate total price for c
 Need to do:
 1. Tahograf method that contains total traveled distanse and it cant be changed.
 2. After travel sort disel cars by final price, gasoline cars by distance to runout.
-3. Add run out parameter for car, engine replacement during travel when it runs out, count it in calculations
+
  
