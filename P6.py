@@ -186,8 +186,8 @@ class calculator(car):
         self.Diseltanks = 0
         for i in range(1, (self.dist+1)):
             if i < constants.engine.gasoline.switchfueldist:
-                self.Diselspent += self.gasolineconsumption #Total ammount of Fuel AI 92 spent on distance
-                if not i % self.fueltank: #Total ammount of Fuel AI 92 cans spent on distance
+                self.Diselspent += self.gasolineconsumption #Total ammount of diselfuel spent on distance
+                if not i % self.fueltank: #Total ammount of disel fuel cans spent on distance
                     self.Diseltanks += 1
             if not i % constants.engine.encreaseconsumptiondist:
                 self.gasolineconsumption = self.gasolineconsumption + self.gasolineconsumption * constants.engine.consumpincrease
