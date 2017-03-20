@@ -58,12 +58,15 @@ class autopark:
     def addcar(self):
         autopark.carsingarage += 1
 
+        
+        # Update info about total price of all cars in autopark     
     def UpdateTotalCarsPrice(self):
         totalcarprice = 0
         for i in autopark.carslist:
             totalcarprice += autopark.carslist[i][constants.carKeys.carpricekey]
         return "Total price of all cars in garage: {}".format(totalcarprice)
 
+        # Returns info about single car from autopark 
     def carsinfo(self, carnumber = 1):
         self.carnumber = carnumber
         return "{0} car number {1}, Fuel type: {2}, Fueltank {3} liters; Car price {4}; Traveled dsitace {5}; Engine hp: {6}".format \
@@ -73,13 +76,15 @@ class autopark:
              autopark.carslist[self.carnumber][constants.carKeys.enginehp])
 
 class car(autopark):
-
+        
+        #Calling car class - creates new car in autopark
     def __init__(self, name = 'Car'):
         self.name = name
         self.carprice = constants.carprice
         self.__tahograf = 0
         self.parknewcar()
-
+        
+        # Add info about new car to autopark database
     def parknewcar(self):
         autopark.addcar(self)
         self.engine()
@@ -94,6 +99,7 @@ class car(autopark):
         return  "{0} number {1}, Fuel type: {2}, Fueltank {3} liters; Car price {4}; Traveled dsitace {5}.".format\
             (self.name, autopark.carsingarage, self.fueltanktype, self.fueltank, constants.carprice, constants.traveleddist)
 
+        # Select engine and get it stats from constant class
     def engine(self):
         if not autopark.carsingarage % 3:
             self.enginehp = constants.engine.disel.hp
@@ -111,10 +117,12 @@ class car(autopark):
             self.fueltank = constants.smallfueltank
 
 class calculator(car):
+        # Input parameter is number of a single car in autopark. Car number and other info - call autopark.carsinfo()
     def __init__(self, carnumber, name = 'Price'):
         self.carnumber = carnumber
         self.name = name
 
+        # Calculates price of repairs and engine during random travel. Updates current health points of engine
     def priceSTO(self):
         self.engineslost = 0
         self.fueltanktype = autopark.carslist[self.carnumber][constants.carKeys.fueltypekey]
@@ -139,7 +147,8 @@ class calculator(car):
             self.repairprice =  self.repairnumber * constants.engine.disel.stoprice
             self.repairprice = self.repairnumber * constants.engine.disel.stoprice + self.iznos * constants.engine.disel.diseliznos + self.engineslost * constants.engine.engineprice
         return "Travel name : {0}; Distance : {1}; Number of repairs : {2}; STO price : {3};".format(self.name, self.dist, self.repairnumber, self.repairprice)
-
+        
+        #Calculates total fuel prise spent during the travel
     def priceFuel(self):
         self.fueltanktype = autopark.carslist[self.carnumber][constants.carKeys.fueltypekey]
         self.fueltank = autopark.carslist[self.carnumber][constants.carKeys.fueltankkey]
@@ -150,6 +159,7 @@ class calculator(car):
             self.gasolineconsumption = constants.engine.disel.diselconsumption
             self.priceDisel()
 
+        #Calculates total fuel prise if it gasoline
     def priceGasoline(self):
         self.AI92spent = 0
         self.AI92tanks = 0
@@ -170,6 +180,7 @@ class calculator(car):
         self.totalAI95price = self.AI95tanks * self.fueltank * constants.engine.gasoline.priceAI95
         self.totalfuelprice = self.totalAI92price + self.totalAI95price
 
+        #Calculates total fuel prise if it gasoline
     def priceDisel(self):
         self.Diselspent = 0
         self.Diseltanks = 0
@@ -182,6 +193,7 @@ class calculator(car):
                 self.gasolineconsumption = self.gasolineconsumption + self.gasolineconsumption * constants.engine.consumpincrease
         self.totalfuelprice = self.Diseltanks * self.fueltank * constants.engine.disel.diselprice
 
+        # Create new travel
     def travel(self, mindist = 55000, maxdist = 286000):
         self.mindist = mindist
         self.maxdist = maxdist
@@ -189,6 +201,7 @@ class calculator(car):
         self.dist = random.randint(self.mindist, self.maxdist)
         return "Path {0}, distance {1}".format(self.name, self.dist)
 
+        # Calculates total price of a trvel, and updates it inf in database
     def summary(self, mindist = 55000, maxdist = 286000):
         self.mindist = mindist
         self.maxdist = maxdist
