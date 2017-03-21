@@ -1,6 +1,15 @@
 import sys
+from datetime import datetime
 print sys.version
-
+import logging
+logger = logging.getLogger('Spamer')
+logger.setLevel(logging.INFO)
+fh = logging.FileHandler('MyLoggerLog.log')
+fh.setLevel(logging.INFO)
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+logger.addHandler(fh)
+logger.addHandler(ch)
 
 
 class constants:
@@ -91,8 +100,7 @@ class car(autopark):
         self.name = name
         self.carprice = constants.carprice
         self.parknewcar()
-        logger("Created {0} number {1}, Fuel type: {2}, Fueltank {3} liters; Car price {4}; Traveled dsitace {5}.".format\
-            (self.name, autopark.carsingarage, self.fueltanktype, self.fueltank, constants.carprice, constants.traveleddist))
+
 
     def parknewcar(self):
         autopark.addcar(self)
@@ -136,6 +144,7 @@ class car(autopark):
         self.tahograf = self.dist
         self.freeze_tahog()
         autopark.carslist[self.travelcar][constants.carKeys.tahograf] += self.tahograf
+        logger.info('Distance traveled: {}, at {}'.format(self.dist, datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")))
         return "Path {0}, distance {1}".format(self.name, self.dist)
 
     def unfreeze_tahog(self):
