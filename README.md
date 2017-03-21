@@ -14,7 +14,8 @@ PriceFuel method calculates fuel price spent on current travel. Fuel can be dise
 Summary method use priceSto and priceFuel methods to calculate total price for current travel.
 
 Need to do:
-1. Tahograf method that contains total traveled distanse and it cant be changed.
-2. After travel sort disel cars by final price, gasoline cars by distance to runout.
-3. Add run out parameter for car, engine replacement during travel when it runs out, count it in calculations
+1. Tahograf method that contains total traveled distanse and it cant be changed. - in process
+2. After travel sort disel cars by final price, gasoline cars by distance to runout. - in process
+3. Logger - in process
+
  
