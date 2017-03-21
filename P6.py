@@ -4,14 +4,6 @@ import logging
 import logging.handlers
 
 
-class logger:
-    def __init__(self, message = "No input message"):
-        self.message = message
-        logger = logging.getLogger('logger')
-        logger.setLevel(logging.INFO)
-        logger.info(self.message)
-
-
 class constants:
     carprice = 10000
     iznosdist = 1000
